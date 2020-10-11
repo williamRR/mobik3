@@ -83,7 +83,7 @@ public class AdminController {
     return "redirect:/admin/users";
   }
 
-    @GetMapping("/newBike")
+  @GetMapping("/newBike")
   public String getNewBike(Model model) {
     model.addAttribute("title", "NUEVA BICICLETA");
     model.addAttribute("bike", new Bike());
@@ -117,7 +117,7 @@ public class AdminController {
     Bike bike = new Bike();
     if (id > 0) {
       bike = iBikeService.findOne(id);
-      if (bike == null){
+      if (bike == null) {
         flash.addFlashAttribute("error", "El ID no existe en la bdd!");
         return "redirect:/admin/bikes";
       }
@@ -145,7 +145,7 @@ public class AdminController {
     Usuario usuario = new Usuario();
     if (id > 0) {
       usuario = iUsuarioService.findOne(id);
-      if (usuario == null){
+      if (usuario == null) {
         flash.addFlashAttribute("error", "El ID no existe en la bdd!");
         return "redirect:/admin/users";
       }

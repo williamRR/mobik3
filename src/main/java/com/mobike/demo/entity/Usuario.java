@@ -3,7 +3,6 @@ package com.mobike.demo.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,9 +31,16 @@ public class Usuario implements Serializable {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id")
   private List<Role> roles;
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id")
+  private List<Payment> mediosPago;
 
-  public static long getSerialVersionUID() {
-    return serialVersionUID;
+  public List<Payment> getMediosPago() {
+    return mediosPago;
+  }
+
+  public void setMediosPago(List<Payment> mediosPago) {
+    this.mediosPago = mediosPago;
   }
 
   public Long getId() {

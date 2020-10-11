@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "bikes")
-public class Bike implements Serializable {
 
+public class Bike implements Serializable {
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +20,6 @@ public class Bike implements Serializable {
   @NotNull
   @Column(name = "available_flag")
   private boolean availableFlag;
-  @Column(name = "deleted_flag")
-  private boolean deletedFlag;
-
-  public static long getSerialVersionUID() {
-    return serialVersionUID;
-  }
 
   public Long getId() {
     return id;
@@ -59,12 +53,5 @@ public class Bike implements Serializable {
     this.availableFlag = availableFlag;
   }
 
-  public boolean isDeletedFlag() {
-    return deletedFlag;
-  }
-
-  public void setDeletedFlag(boolean deletedFlag) {
-    this.deletedFlag = deletedFlag;
-  }
 
 }

@@ -32,10 +32,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             AuthorityUtils.authorityListToSet(authentication.getAuthorities());
     if (roles.contains("ROLE_ADMIN")) {
       response.sendRedirect("/admin/");
-      System.out.println(roles);
     } else {
       response.sendRedirect("/user/");
-      System.out.println(roles);
     }
     super.onAuthenticationSuccess(request, response, authentication);
   }

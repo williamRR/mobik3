@@ -1,6 +1,6 @@
 package com.mobike.demo.serviceImpl;
 
-import com.mobike.demo.dao.IUserDao;
+import com.mobike.demo.dao.IUserDAO;
 import com.mobike.demo.entity.Role;
 import com.mobike.demo.entity.Usuario;
 import com.mobike.demo.services.IUsuarioService;
@@ -21,7 +21,7 @@ import java.util.List;
 public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
   @Autowired
-  private IUserDao iUserDao;
+  private IUserDAO iUserDao;
 
   @Override
   public List<Usuario> findAll() {
@@ -44,7 +44,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
   }
 
   @Override
-  @Transactional(readOnly=true)
+  @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Usuario usuario = iUserDao.findByUsername(username);
 
@@ -52,7 +52,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
       throw new UsernameNotFoundException("Usuario no encontrado!");
     }
     List<GrantedAuthority> authorities = new ArrayList<>();
-    for(Role role: usuario.getRoles()){
+    for (Role role : usuario.getRoles()) {
       authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
     }
     return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);

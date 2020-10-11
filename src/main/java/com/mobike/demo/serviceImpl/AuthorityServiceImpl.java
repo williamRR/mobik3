@@ -11,6 +11,7 @@ public class AuthorityServiceImpl implements IAuthorityService {
 
   @Autowired
   IAuthorityDAO authorityDAO;
+
   @Override
   public void save(Role role) {
     authorityDAO.save(role);

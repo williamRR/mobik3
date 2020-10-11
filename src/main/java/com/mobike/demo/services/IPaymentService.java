@@ -1,16 +1,16 @@
 package com.mobike.demo.services;
 
-import com.mobike.demo.entity.MedioPago;
+import com.mobike.demo.entity.Payment;
 
 import java.util.List;
 
-public interface IMedioPagoService {
+public interface IPaymentService {
 
-  public List<MedioPago> findAll();
+  public List<Payment> findAll();
 
-  public void save(MedioPago medioPago);
+  public void save(Payment payment);
 
-  public MedioPago findOne(Long id);
+  public Payment findOne(Long id);
 
   public void delete(Long id);
 }

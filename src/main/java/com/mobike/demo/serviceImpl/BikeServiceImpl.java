@@ -1,6 +1,6 @@
 package com.mobike.demo.serviceImpl;
 
-import com.mobike.demo.dao.IBikeDao;
+import com.mobike.demo.dao.IBikeDAO;
 import com.mobike.demo.entity.Bike;
 import com.mobike.demo.services.IBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.List;
 public class BikeServiceImpl implements IBikeService {
 
   @Autowired
-  private IBikeDao iBikeDao;
+  private IBikeDAO iBikeDao;
 
   @Override
   @Transactional(readOnly = true)

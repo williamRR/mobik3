@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="authorities", uniqueConstraints = {@UniqueConstraint(columnNames={"user_id", "authority"})})
+@Table(name = "authorities", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "authority"})})
 public class Role implements Serializable {
 
   @Id
@@ -12,6 +12,7 @@ public class Role implements Serializable {
   private Long id;
   private String authority;
   private Long user_id;
+
   public Role() {
   }
 

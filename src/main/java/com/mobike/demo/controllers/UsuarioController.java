@@ -1,30 +1,79 @@
 package com.mobike.demo.controllers;
 
+import com.mobike.demo.entity.Payment;
+import com.mobike.demo.entity.Usuario;
+import com.mobike.demo.services.IPaymentService;
+import com.mobike.demo.services.IUsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("user")
 public class UsuarioController {
 
+  @Autowired
+  private IUsuarioService usuarioService;
+  @Autowired
+  private IPaymentService medioPagoService;
+
   @GetMapping({"/", "/home"})
-  public String list(Model model) {
+  public String list(Model model, Authentication authentication) {
+    if (authentication != null) {
+      Usuario usuario = usuarioService.findByUsername(authentication.getName());
+      model.addAttribute("usuario", usuario);
+    }
     return "userHome";
   }
 
   @GetMapping("/editar")
-  public String edit() { return "userEdit"; }
+  public String edit() {
+    return "userEdit";
+  }
 
-//  @GetMapping("/agregar")
-//  public String create() {
-//    return "arrendarBicicleta";
-//  }
+  @GetMapping("/newPayment")
+  public String getNewPayment(Model model) {
+    model.addAttribute("title", "NUEVO MÉTODO DE PAGO");
+    model.addAttribute("payment", new Payment());
+    return "newPaymentForm";
+  }
 
-//  @GetMapping("/delete")
-//  public String delete() {
-//    return "newUserForm";
-//  }
+  @PostMapping("/newPayment")
+  public String postNewPayment(@Valid Payment payment, BindingResult result, RedirectAttributes flash, Model model, Authentication authentication) {
+    if (result.hasErrors()) {
+      model.addAttribute("title", "NUEVO MEDIO DE PAGO *");
+      return "newPaymentForm";
+    }
+    String mensajeFLash = (payment.getId() != null) ? "Medio de pago Registrado" : "Medio de pago Editado";
+    Long id = usuarioService.findByUsername(authentication.getName()).getId();
+    payment.setUser_id(id);
+    medioPagoService.save(payment);
+    flash.addFlashAttribute("success", mensajeFLash);
+    return "redirect:/payments";
+  }
+
+  @GetMapping("/payments")
+  public String paymentList(Model model) {
+    model.addAttribute("payments", medioPagoService.findAll());
+    return "payments";
+  }
+
+  @GetMapping("/deletePayment/{id}")
+  public String delete(@PathVariable Long id, RedirectAttributes flash) {
+    if (id > 0) {
+      medioPagoService.delete(id);
+      flash.addFlashAttribute("success", "Medio de Pago Eliminada");
+    }
+    return "redirect:/users/payments";
+  }
 
 }

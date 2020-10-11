@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table
-public class MedioPago {
+public class Payment {
 
   private static final long serialVersionUID = 1L;
   @Id

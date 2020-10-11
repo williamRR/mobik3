@@ -30,11 +30,13 @@ public class IndexController {
     model.addAttribute("title", "MOBIKE");
     return "home";
   }
+
   @GetMapping("/register")
   public String registerForm(Model model) {
     model.addAttribute("usuario", new Usuario());
     return "registerForm";
   }
+
   @PostMapping("/register")
   public String registrarNuevo(@Valid Usuario usuario, BindingResult result, RedirectAttributes flash, Model model) {
     if (result.hasErrors()) {
@@ -55,17 +57,5 @@ public class IndexController {
     flash.addFlashAttribute("success", mensajeFlash);
     return "redirect:/login";
   }
-//
-//  @GetMapping("/listar")
-//  public String listar(Model model) {
-//    model.addAttribute("title", "Lista de usuarios");
-//    return "listarUsuarios";
-//  }
-//
-//  @ModelAttribute("usuarios")
-//  public List<Usuario> poblarUsuarios() {
-//    List<Usuario> usuarios = new ArrayList<>();
-//
-//    return usuarios;
-//  }
+
 }

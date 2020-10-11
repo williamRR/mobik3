@@ -25,7 +25,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-            .antMatchers("/","/css/**","/js/**","/images/**","/home", "/register", "/404" ).permitAll()
+            .antMatchers("/", "/css/**", "/js/**", "/images/**", "/home", "/register", "/404").permitAll()
             .antMatchers("/user/**").hasAnyRole("USER")
             .antMatchers("/admin/**").hasAnyRole("ADMIN")
             .anyRequest().authenticated()
@@ -51,7 +51,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //            .passwordEncoder(passwordEncoder)
 //            .usersByUsernameQuery("select username, password, enabled from users where username=?")
 //            .authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id = u.id) where u.username = ?");
-
 
 
 //    UserBuilder users = User.builder().passwordEncoder(password -> {
