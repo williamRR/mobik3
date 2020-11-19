@@ -7,6 +7,7 @@ import com.mobike.demo.services.IAuthorityService;
 import com.mobike.demo.services.IBikeService;
 import com.mobike.demo.services.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,8 @@ public class AdminController {
   private IAuthorityService iAuthorityService;
 
   @GetMapping({"/", "/home"})
-  public String home(Model model) {
+  public String home(Model model, Authentication authentication) {
+    model.addAttribute(iUsuarioService.findByUsername(authentication.getName()));
     model.addAttribute("title", "HOME");
     return "adminHome";
   }
@@ -42,7 +44,6 @@ public class AdminController {
   public String userslist(Model model) {
     model.addAttribute("title", "USUARIOS");
     model.addAttribute("users", iUsuarioService.findAll());
-    System.out.println(iUsuarioService.findAll());
     return "users";
   }
 
@@ -50,15 +51,13 @@ public class AdminController {
   public String bikeslist(Model model) {
     model.addAttribute("title", "BICICLETAS");
     model.addAttribute("bikes", iBikeService.findAll());
-    System.out.println(iBikeService.findAll());
     return "bikes";
   }
 
   @GetMapping("/newUser")
   public String edit(Model model) {
     model.addAttribute("title", "NUEVO USUARIO");
-    Usuario usuario = new Usuario();
-    model.addAttribute("usuario", usuario);
+    model.addAttribute("usuario", new Usuario());
     return "newUserForm";
   }
 
@@ -68,8 +67,7 @@ public class AdminController {
       model.addAttribute("title", "NUEVO USUARIO *");
       return "newUserForm";
     }
-    String mensajeFlash = (usuario.getId() != null) ? "Usuario Registrado" : "Usuario modificado";
-
+    String mensajeFlash = (usuario.getId() != null) ? "Usuario Modificado" : "Usuario Registrado";
     String passwordEncoded = passwordEncoder.encode(usuario.getPassword());
     usuario.setPassword((passwordEncoded));
     usuario.setEnabled(true);
@@ -78,7 +76,7 @@ public class AdminController {
     Long id = iUsuarioService.findByUsername(usuario.getUsername()).getId();
     Role role = new Role(id, "ROLE_USER");
     iAuthorityService.save(role);
-
+    model.addAttribute("title", "USUARIOS");
     flash.addFlashAttribute("success", mensajeFlash);
     return "redirect:/admin/users";
   }
@@ -96,7 +94,8 @@ public class AdminController {
       model.addAttribute("title", "NUEVA BICICLETA *");
       return "newBikeForm";
     }
-    String mensajeFLash = (bike.getId() != null) ? "Bicicleta Registrada" : "Bicicleta Editada";
+    String mensajeFLash = (bike.getId() != null) ? "Bicicleta Editada" : "Bicicleta Registrada";
+    model.addAttribute("title", "BICICLETAS");
 
     iBikeService.save(bike);
     flash.addFlashAttribute("success", mensajeFLash);
@@ -104,11 +103,13 @@ public class AdminController {
   }
 
   @GetMapping("/deleteBike/{id}")
-  public String delete(@PathVariable Long id, RedirectAttributes flash) {
+  public String delete(@PathVariable Long id, RedirectAttributes flash, Model model) {
     if (id > 0) {
       iBikeService.delete(id);
       flash.addFlashAttribute("success", "Bicicleta Eliminada");
     }
+    model.addAttribute("title", "BICICLETAS");
+
     return "redirect:/admin/bikes";
   }
 

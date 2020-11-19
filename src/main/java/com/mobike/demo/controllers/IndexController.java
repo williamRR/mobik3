@@ -34,6 +34,7 @@ public class IndexController {
   @GetMapping("/register")
   public String registerForm(Model model) {
     model.addAttribute("usuario", new Usuario());
+    model.addAttribute("title", "REGISTRO");
     return "registerForm";
   }
 
@@ -53,6 +54,7 @@ public class IndexController {
     Long id = iUsuarioService.findByUsername(usuario.getUsername()).getId();
     Role role = new Role(id, "ROLE_USER");
     iAuthorityService.save(role);
+    model.addAttribute("title", "INICIAR SESIÓN");
 
     flash.addFlashAttribute("success", mensajeFlash);
     return "redirect:/login";

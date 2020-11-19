@@ -9,10 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -32,12 +29,23 @@ public class UsuarioController {
       Usuario usuario = usuarioService.findByUsername(authentication.getName());
       model.addAttribute("usuario", usuario);
     }
+    model.addAttribute("title", "INICIO");
+
     return "userHome";
   }
 
   @GetMapping("/editar")
-  public String edit() {
+  public String edit(Model model, Authentication authentication) {
+    model.addAttribute(usuarioService.findByUsername(authentication.getName()));
+    model.addAttribute("title", "EDITAR MI PERFIL");
     return "userEdit";
+  }
+
+  @PostMapping("/editar")
+  public String postEdit(@Valid Usuario usuario, BindingResult result, Model model, Authentication authentication) {
+    usuarioService.save(usuario);
+    model.addAttribute("title", "INICIO");
+    return "userHome";
   }
 
   @GetMapping("/newPayment")

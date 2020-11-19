@@ -14,7 +14,7 @@
       <li sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link" th:href="@{/admin/bikes}">Bicicletas</a>
       </li>
-      <form method="post" th:action="@{/user/editar}" th:object="${usuario}">
+      <form method="post" th:action="@{/editUser/}+${usuario.id}" th:object="${usuario}">
 
         <input th:field="*{id}" type="hidden"/>
         <div class="form-group row">
